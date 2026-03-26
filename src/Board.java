@@ -25,5 +25,13 @@ class Board {
             board[row][col] = 1;
         }
     }
+
+    public void shot(int row, int col){
+        if (board[row][col] == 1){
+            System.out.println("You hit the target");
+        } else{
+            System.out.println("You have missed");
+        }
+    }
 }
 
