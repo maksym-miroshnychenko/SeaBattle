@@ -4,10 +4,6 @@ class Board {
     Random random = new Random();
     int [][] board = new int[5][5];
 
-    public void setBoard(int i, int j, int value){
-        board[i][j] = value;
-    }
-
     public void printBoard(){
         for (int i = 0; i < 5; i++){
             for (int j = 0; j < 5; j++){
@@ -26,12 +22,16 @@ class Board {
         }
     }
 
-    public void shot(int row, int col){
+    public boolean shot(int row, int col){
+        boolean hit = false;
         if (board[row][col] == 1){
             System.out.println("You hit the target");
+            hit = true;
         } else{
             System.out.println("You have missed");
+            board[row][col] = 2;
         }
+        return hit;
     }
 }
 
