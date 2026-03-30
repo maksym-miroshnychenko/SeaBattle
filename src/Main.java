@@ -8,7 +8,7 @@ public class Main{
     int col = 0;
     boolean gameState = false;
 
-        board.placeShip(1);
+        board.placeShip(3);
         board.printBoard();
 
 
@@ -17,7 +17,7 @@ public class Main{
                 System.out.println("Your turn, enter row then colon");
                 row = scanner.nextInt();
                 col = scanner.nextInt();
-            }while (row >= 5 || row < 0 || col >= 5 || col < 0);
+            }while (row >= 10 || row < 0 || col >= 10 || col < 0);
 
             gameState = board.shot(row, col);
 

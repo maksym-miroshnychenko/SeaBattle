@@ -2,11 +2,11 @@ import java.util.Random;
 
 class Board {
     Random random = new Random();
-    int [][] board = new int[5][5];
+    int [][] board = new int[10][10];
 
     public void printBoard(){
-        for (int i = 0; i < 5; i++){
-            for (int j = 0; j < 5; j++){
+        for (int i = 0; i < 10; i++){
+            for (int j = 0; j < 10; j++){
                 System.out.print(board[i][j] + " ");
             }
             System.out.println();
@@ -14,11 +14,24 @@ class Board {
     }
 
     public void placeShip(int size){
-        int row = random.nextInt(5);
-        int col = random.nextInt(5);
+        boolean placed = false;
 
-        for(int i = 0; i < size; i++){
-            board[row][col] = 1;
+        while (!placed) {
+            int row = random.nextInt(10);
+            int col = random.nextInt(10);
+            boolean horizontal = random.nextBoolean();
+
+            if (horizontal && col + size - 1 < 10) {
+                for (int i = 0; i < size; i++) {
+                    board[row][col + i] = 1;
+                }
+                placed = true;
+            } else if (!horizontal && row + size - 1 < 10) {
+                for (int i = 0; i < size; i++) {
+                    board[row + i][col] = 1;
+                }
+                placed = true;
+            }
         }
     }
 
