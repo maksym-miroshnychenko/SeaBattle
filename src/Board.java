@@ -20,17 +20,33 @@ class Board {
             int row = random.nextInt(10);
             int col = random.nextInt(10);
             boolean horizontal = random.nextBoolean();
+            boolean isFree = true;
+
 
             if (horizontal && col + size - 1 < 10) {
                 for (int i = 0; i < size; i++) {
-                    board[row][col + i] = 1;
+                    if(board[row][col + i] == 1) {
+                        isFree = false;
+                    }
                 }
-                placed = true;
+                for (int i = 0; i < size; i++) {
+                    if(isFree){
+                        board[row][col + i]= 1;
+                    }
+                }
+                if(isFree){placed = true;}
             } else if (!horizontal && row + size - 1 < 10) {
                 for (int i = 0; i < size; i++) {
-                    board[row + i][col] = 1;
+                    if(board[row + i][col] == 1) {
+                        isFree = false;
+                    }
                 }
-                placed = true;
+                for (int i = 0; i < size; i++) {
+                    if(isFree) {
+                        board[row + i][col] = 1;
+                    }
+                }
+                if(isFree){placed = true;}
             }
         }
     }
