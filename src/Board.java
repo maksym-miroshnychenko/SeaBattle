@@ -5,11 +5,19 @@ class Board {
     int [][] board = new int[10][10];
 
     public void printBoard(){
+        System.out.println("--------------------------");
+        System.out.println("  A B C D E F G J H K ");
         for (int i = 0; i < 10; i++){
+            System.out.print((i) + " ");
             for (int j = 0; j < 10; j++){
-                System.out.print(board[i][j] + " ");
+                String symbol = switch (board[i][j]) {
+                    case 1 -> "O ";
+                    case 2 -> "X ";
+                    default -> ". ";
+                };
+                System.out.print(symbol);
             }
-            System.out.println();
+            System.out.println("|");
         }
     }
 
@@ -21,32 +29,39 @@ class Board {
             int col = random.nextInt(10);
             boolean horizontal = random.nextBoolean();
             boolean isFree = true;
-
+            boolean outOfBounce = board[row - 1][col] < 0 && board[row + 1][col] > 10 && board[row][col - 1] < 0 && board[row][col + 1] > 10;
 
             if (horizontal && col + size - 1 < 10) {
                 for (int i = 0; i < size; i++) {
-                    if(board[row][col + i] == 1) {
-                        isFree = false;
+                    if(!outOfBounce) {
+                        if (board[row - 1][col + i] == 1 || board[row][col + i] == 1 || board[row + 1][col + i] == 1) {
+                            isFree = false;
+                            break;
+                        }
                     }
                 }
-                for (int i = 0; i < size; i++) {
-                    if(isFree){
-                        board[row][col + i]= 1;
+                if(isFree) {
+                    for (int i = 0; i < size; i++) {
+                        board[row][col + i] = 1;
                     }
+                    placed = true;
                 }
-                if(isFree){placed = true;}
+
             } else if (!horizontal && row + size - 1 < 10) {
                 for (int i = 0; i < size; i++) {
-                    if(board[row + i][col] == 1) {
-                        isFree = false;
+                    if(!outOfBounce) {
+                        if (board[row + i][col - 1] == 1 || board[row + i][col] == 1 || board[row + i][col + 1] == 1) {
+                            isFree = false;
+                            break;
+                        }
                     }
                 }
-                for (int i = 0; i < size; i++) {
-                    if(isFree) {
+                if(isFree) {
+                    for (int i = 0; i < size; i++) {
                         board[row + i][col] = 1;
                     }
+                    placed = true;
                 }
-                if(isFree){placed = true;}
             }
         }
     }

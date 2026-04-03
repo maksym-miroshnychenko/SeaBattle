@@ -8,7 +8,12 @@ public class Main{
     int col = 0;
     boolean gameState = false;
 
-        board.placeShip(3);
+        for (int size = 1; size <= 4; size++) {
+            for (int i = 1; i <= 5 - size; i++) {
+                board.placeShip(size);
+            }
+        }
+
         board.printBoard();
 
 
