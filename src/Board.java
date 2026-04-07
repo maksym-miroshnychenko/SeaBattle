@@ -29,15 +29,19 @@ class Board {
             int col = random.nextInt(10);
             boolean horizontal = random.nextBoolean();
             boolean isFree = true;
-            boolean outOfBounce = board[row - 1][col] < 0 && board[row + 1][col] > 10 && board[row][col - 1] < 0 && board[row][col + 1] > 10;
 
             if (horizontal && col + size - 1 < 10) {
-                for (int i = 0; i < size; i++) {
-                    if(!outOfBounce) {
-                        if (board[row - 1][col + i] == 1 || board[row][col + i] == 1 || board[row + 1][col + i] == 1) {
-                            isFree = false;
-                            break;
+                for (int r = row - 1; r <=  row + 1; r++) {
+                    for (int c = col - 1; c <= col + size; c++) {
+                        if (r >= 0 && r < 10 && c >= 0 && c < 10) {
+                            if(board[r][c] == 1) {
+                                isFree = false;
+                                break;
+                            }
                         }
+                    }
+                    if (!isFree){
+                        break;
                     }
                 }
                 if(isFree) {
@@ -48,12 +52,17 @@ class Board {
                 }
 
             } else if (!horizontal && row + size - 1 < 10) {
-                for (int i = 0; i < size; i++) {
-                    if(!outOfBounce) {
-                        if (board[row + i][col - 1] == 1 || board[row + i][col] == 1 || board[row + i][col + 1] == 1) {
-                            isFree = false;
-                            break;
+                for (int r = row - 1; r <=  row + size; r++) {
+                    for (int c = col - 1; c <= col + 1; c++) {
+                        if (r >= 0 && r < 10 && c >= 0 && c < 10) {
+                            if (board[r][c] == 1) {
+                                isFree = false;
+                                break;
+                            }
                         }
+                    }
+                    if (!isFree){
+                        break;
                     }
                 }
                 if(isFree) {
