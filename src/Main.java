@@ -6,7 +6,9 @@ public class Main{
     Scanner scanner = new Scanner(System.in);
     int row = 0;
     int col = 0;
-    boolean gameState = false;
+    boolean allDestroyed = false;
+    boolean hit = false;
+
 
         for (int size = 1; size <= 4; size++) {
             for (int i = 1; i <= 5 - size; i++) {
@@ -17,16 +19,19 @@ public class Main{
         board.printBoard();
 
 
-        while (!gameState){
+        while (!allDestroyed){
             do {
-                System.out.println("Your turn, enter row then colon");
+                System.out.println("Your turn, enter row then column");
                 row = scanner.nextInt();
                 col = scanner.nextInt();
             }while (row >= 10 || row < 0 || col >= 10 || col < 0);
 
-            gameState = board.shot(row, col);
+            hit = board.shot(row, col);
 
-            if (gameState){
+
+            allDestroyed = board.allDestroyed();
+
+            if (allDestroyed){
                 System.out.println("You won!");
             }
         }

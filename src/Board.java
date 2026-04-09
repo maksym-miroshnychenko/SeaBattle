@@ -13,6 +13,7 @@ class Board {
                 String symbol = switch (board[i][j]) {
                     case 1 -> "O ";
                     case 2 -> "X ";
+                    case 3 -> "M ";
                     default -> ". ";
                 };
                 System.out.print(symbol);
@@ -77,14 +78,33 @@ class Board {
 
     public boolean shot(int row, int col){
         boolean hit = false;
-        if (board[row][col] == 1){
-            System.out.println("You hit the target");
-            hit = true;
-        } else{
-            System.out.println("You have missed");
-            board[row][col] = 2;
+        switch(board[row][col]){
+            case 0:
+                System.out.println("You have missed");
+                board[row][col] = 3;
+                hit = false;
+                break;
+            case 1:
+                System.out.println("You hit the target");
+                board[row][col] = 2;
+                hit = true;
+                break;
+            default:
+                System.out.println("You`ve shot here already");
+
         }
         return hit;
+    }
+
+    public boolean allDestroyed(){
+        for (int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                if(board[i][j] == 1){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
 
