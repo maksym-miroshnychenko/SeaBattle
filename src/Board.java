@@ -3,7 +3,7 @@ import java.util.Random;
 class Board {
     Random random = new Random();
     int [][] board = new int[10][10];
-    final int SIZE = 10;
+    static final int SIZE = 10;
     static final int WATER = 0;
     static final int SHIP = 1;
     static final int HIT = 2;
@@ -11,6 +11,24 @@ class Board {
 
 
     public void printBoard(){
+        System.out.println("--------------------------");
+        System.out.println("  A B C D E F G H I J ");
+        for (int i = 0; i < SIZE; i++){
+            System.out.print((i) + " ");
+            for (int j = 0; j < SIZE; j++){
+                String symbol = switch (board[i][j]) {
+                    case SHIP -> ". ";
+                    case HIT -> "X ";
+                    case MISS -> "M ";
+                    default -> ". ";
+                };
+                System.out.print(symbol);
+            }
+            System.out.println("|");
+        }
+    }
+
+    public void printDebugBoard(){
         System.out.println("--------------------------");
         System.out.println("  A B C D E F G H I J ");
         for (int i = 0; i < SIZE; i++){
@@ -82,35 +100,33 @@ class Board {
         }
     }
 
-    public boolean shot(int row, int col){
-        boolean hit = false;
+    public int shot(int row, int col){
         switch(board[row][col]){
             case WATER:
                 System.out.println("You have missed");
                 board[row][col] = MISS;
-                hit = false;
-                break;
+                return MISS;
             case SHIP:
                 System.out.println("You hit the target");
                 board[row][col] = HIT;
-                hit = true;
-                break;
+                return HIT;
             default:
                 System.out.println("You`ve shot here already");
-
+                return HIT;
         }
-        return hit;
+
     }
 
-    public boolean allDestroyed(){
-        for (int i = 0; i < SIZE; i++){
+    public int shipCellCount(){
+        int shipCellCount = 0;
+        for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
                 if(board[i][j] == SHIP){
-                    return false;
+                    shipCellCount ++;
                 }
             }
         }
-        return true;
+        return shipCellCount;
     }
 }
 

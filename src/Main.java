@@ -6,8 +6,8 @@ public class Main{
     Scanner scanner = new Scanner(System.in);
     int row = 0;
     int col = 0;
-    boolean allDestroyed = false;
-    boolean hit = false;
+    boolean debugMode = true;
+
 
 
         for (int size = 1; size <= 4; size++) {
@@ -16,22 +16,38 @@ public class Main{
             }
         }
 
-        board.printBoard();
+        if (debugMode){
+            board.printDebugBoard();
+        } else {
+            board.printBoard();
+        }
 
 
-        while (!allDestroyed){
+        while (board.shipCellCount() != 0){
             do {
                 System.out.println("Your turn, enter row then column");
                 row = scanner.nextInt();
                 col = scanner.nextInt();
-            }while (row >= board.SIZE || row < 0 || col >= board.SIZE || col < 0);
+            }while (row >= Board.SIZE || row < 0 || col >= Board.SIZE || col < 0);
 
-            hit = board.shot(row, col);
+            board.shot(row, col);
+            if(board.shot(row, col) == Board.HIT){
+                do {
+                    System.out.println("Your turn, enter row then column");
+                    row = scanner.nextInt();
+                    col = scanner.nextInt();
+                }while (row >= Board.SIZE || row < 0 || col >= Board.SIZE || col < 0);
+            }
+
+            if (debugMode){
+                board.printDebugBoard();
+            } else {
+                board.printBoard();
+            }
+            System.out.println(board.shipCellCount() + " " + "Ships left");
 
 
-            allDestroyed = board.allDestroyed();
-
-            if (allDestroyed){
+            if (board.shipCellCount() == 0){
                 System.out.println("You won!");
             }
         }
