@@ -24,7 +24,7 @@ public class Main{
                 System.out.println("Your turn, enter row then column");
                 row = scanner.nextInt();
                 col = scanner.nextInt();
-            }while (row >= 10 || row < 0 || col >= 10 || col < 0);
+            }while (row >= board.SIZE || row < 0 || col >= board.SIZE || col < 0);
 
             hit = board.shot(row, col);
 
