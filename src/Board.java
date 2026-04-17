@@ -8,6 +8,8 @@ class Board {
     static final int SHIP = 1;
     static final int HIT = 2;
     static final int MISS = 3;
+    static final int ALREADY_SHOT = 5;
+
 
 
     public void printBoard(){
@@ -103,16 +105,13 @@ class Board {
     public int shot(int row, int col){
         switch(board[row][col]){
             case WATER:
-                System.out.println("You have missed");
                 board[row][col] = MISS;
                 return MISS;
             case SHIP:
-                System.out.println("You hit the target");
                 board[row][col] = HIT;
                 return HIT;
             default:
-                System.out.println("You`ve shot here already");
-                return HIT;
+                return ALREADY_SHOT;
         }
 
     }

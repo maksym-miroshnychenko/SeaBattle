@@ -15,6 +15,7 @@ public class Main{
                 board.placeShip(size);
             }
         }
+        int shipcellsLeft = board.shipCellCount();
 
         if (debugMode){
             board.printDebugBoard();
@@ -23,32 +24,42 @@ public class Main{
         }
 
 
-        while (board.shipCellCount() != 0){
-            do {
-                System.out.println("Your turn, enter row then column");
-                row = scanner.nextInt();
-                col = scanner.nextInt();
-            }while (row >= Board.SIZE || row < 0 || col >= Board.SIZE || col < 0);
+        while (shipcellsLeft != 0) {
+            boolean playersTurn = true;
 
-            board.shot(row, col);
-            if(board.shot(row, col) == Board.HIT){
+            while (playersTurn){
                 do {
                     System.out.println("Your turn, enter row then column");
                     row = scanner.nextInt();
                     col = scanner.nextInt();
-                }while (row >= Board.SIZE || row < 0 || col >= Board.SIZE || col < 0);
-            }
+                } while (row >= Board.SIZE || row < 0 || col >= Board.SIZE || col < 0);
 
-            if (debugMode){
-                board.printDebugBoard();
-            } else {
-                board.printBoard();
-            }
-            System.out.println(board.shipCellCount() + " " + "Ships left");
+                int playersShot = board.shot(row, col);
+                shipcellsLeft = board.shipCellCount();
 
+                if (shipcellsLeft == 0){
+                    System.out.println("You won!");
+                }
 
-            if (board.shipCellCount() == 0){
-                System.out.println("You won!");
+                switch (playersShot) {
+                    case Board.HIT:
+                        System.out.println("You`ve hit, you get one more turn!");
+                        break;
+                    case Board.ALREADY_SHOT:
+                        System.out.println("You`ve already hit this cell, turn is still yours!");
+                        break;
+                    case Board.MISS:
+                        System.out.println("You`ve miss, you lose your turn");
+                        playersTurn = false;
+                        break;
+                }
+
+                if (debugMode){
+                    board.printDebugBoard();
+                } else {
+                    board.printBoard();
+                }
+                System.out.println(shipcellsLeft + " Shipcells left");
             }
         }
 
