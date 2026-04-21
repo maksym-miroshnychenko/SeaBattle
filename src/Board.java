@@ -8,7 +8,9 @@ class Board {
     static final int SHIP = 1;
     static final int HIT = 2;
     static final int MISS = 3;
-    static final int ALREADY_SHOT = 5;
+    static final int RESULT_HIT = 1;
+    static final int RESULT_MISS = 0;
+    static final int RESULT_ALREADY_SHOT = 2;
 
 
 
@@ -106,14 +108,16 @@ class Board {
         switch(board[row][col]){
             case WATER:
                 board[row][col] = MISS;
-                return MISS;
+                return RESULT_MISS;
             case SHIP:
                 board[row][col] = HIT;
-                return HIT;
+                return RESULT_HIT;
+            case MISS:
+            case HIT:
+                return RESULT_ALREADY_SHOT;
             default:
-                return ALREADY_SHOT;
+                return MISS;
         }
-
     }
 
     public int shipCellCount(){

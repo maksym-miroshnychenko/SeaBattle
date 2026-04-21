@@ -2,11 +2,12 @@ import java.util.Scanner;
 
 public class Main{
     public static void main(String[] args){
-    Board board = new Board();
-    Scanner scanner = new Scanner(System.in);
-    int row = 0;
-    int col = 0;
-    boolean debugMode = true;
+        Board board = new Board();
+        Scanner scanner = new Scanner(System.in);
+        String input = " ";
+        int row = 0;
+        int col = 0;
+        boolean debugMode = true;
 
 
 
@@ -30,25 +31,27 @@ public class Main{
             while (playersTurn){
                 do {
                     System.out.println("Your turn, enter row then column");
-                    row = scanner.nextInt();
-                    col = scanner.nextInt();
-                } while (row >= Board.SIZE || row < 0 || col >= Board.SIZE || col < 0);
+                    input = scanner.nextLine();
+                    row = coordinateRow(input);
+                    col = coordinateCol(input);
+                } while (input.charAt(0) >= 'A' || input.charAt(0) <= 'J' || Integer.parseInt(input.substring(1)) >);
 
                 int playersShot = board.shot(row, col);
                 shipcellsLeft = board.shipCellCount();
 
                 if (shipcellsLeft == 0){
                     System.out.println("You won!");
+                    playersTurn = false;
                 }
 
                 switch (playersShot) {
-                    case Board.HIT:
+                    case Board.RESULT_HIT:
                         System.out.println("You`ve hit, you get one more turn!");
                         break;
-                    case Board.ALREADY_SHOT:
+                    case Board.RESULT_ALREADY_SHOT:
                         System.out.println("You`ve already hit this cell, turn is still yours!");
                         break;
-                    case Board.MISS:
+                    case Board.RESULT_MISS:
                         System.out.println("You`ve miss, you lose your turn");
                         playersTurn = false;
                         break;
@@ -59,9 +62,23 @@ public class Main{
                 } else {
                     board.printBoard();
                 }
-                System.out.println(shipcellsLeft + " Shipcells left");
+                System.out.println("Ship cells left: " + shipcellsLeft);
             }
         }
 
+        scanner.close();
+    }
+
+    public static int coordinateRow(String input){
+        return Integer.parseInt(input.substring(1));
+    }
+    public static int coordinateCol(String input){
+        char col = input.toUpperCase().charAt(0);
+        return col - 'A';
+    }
+    public static boolean isValidInput(String input){
+        if(input.length() > 2){return false;}
+        else if (input.charAt(0) < 'A' || input.charAt(0) > 'J') { return false;}
+        else if (input.substring(1) != Integer) {        }
     }
 }
