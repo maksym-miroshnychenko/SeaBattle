@@ -30,12 +30,12 @@ public class Main{
 
             while (playersTurn){
                 do {
-                    System.out.println("Your turn, enter row then column");
+                    System.out.println("Your turn, enter coordinate");
                     input = scanner.nextLine();
-                    row = coordinateRow(input);
-                    col = coordinateCol(input);
-                } while (input.charAt(0) >= 'A' || input.charAt(0) <= 'J' || Integer.parseInt(input.substring(1)) >);
+                } while (!isValidInput(input));
 
+                row = coordinateRow(input);
+                col = coordinateCol(input);
                 int playersShot = board.shot(row, col);
                 shipcellsLeft = board.shipCellCount();
 
@@ -77,8 +77,14 @@ public class Main{
         return col - 'A';
     }
     public static boolean isValidInput(String input){
-        if(input.length() > 2){return false;}
-        else if (input.charAt(0) < 'A' || input.charAt(0) > 'J') { return false;}
-        else if (input.substring(1) != Integer) {        }
+        if(input.length() < 2){return false;}
+        else if (input.toUpperCase().charAt(0) < 'A' || input.toUpperCase().charAt(0) > 'J') { return false;}
+        try{
+            int row = Integer.parseInt(input.substring(1));
+            if(row < 0 || row >= Board.SIZE){return false;}
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 }
