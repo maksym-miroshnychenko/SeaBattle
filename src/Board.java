@@ -2,16 +2,22 @@ import java.util.Random;
 
 class Board {
     Random random = new Random();
-    int [][] board = new int[10][10];
+    Cell [][] board = new Cell[10][10];
     static final int SIZE = 10;
-    static final int WATER = 0;
-    static final int SHIP = 1;
-    static final int HIT = 2;
-    static final int MISS = 3;
-    static final int RESULT_HIT = 1;
-    static final int RESULT_MISS = 0;
-    static final int RESULT_ALREADY_SHOT = 2;
 
+    Board(){
+        for (int i = 0; i < SIZE; i++){
+            for (int j = 0; j < SIZE; j++){
+                board[i][j] = Cell.WATER;
+            }
+        }
+    }
+    enum Cell {
+        WATER, SHIP, HIT, MISS
+    }
+    enum Result {
+        HIT, MISS, ALREADY_SHOT
+    }
 
 
     public void printBoard(){
@@ -63,7 +69,7 @@ class Board {
                 for (int r = row - 1; r <=  row + 1; r++) {
                     for (int c = col - 1; c <= col + size; c++) {
                         if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
-                            if(board[r][c] == SHIP) {
+                            if(board[r][c] == Cell.SHIP) {
                                 isFree = false;
                                 break;
                             }
@@ -75,7 +81,7 @@ class Board {
                 }
                 if(isFree) {
                     for (int i = 0; i < size; i++) {
-                        board[row][col + i] = SHIP;
+                        board[row][col + i] = Cell.SHIP;
                     }
                     placed = true;
                 }
@@ -84,7 +90,7 @@ class Board {
                 for (int r = row - 1; r <=  row + size; r++) {
                     for (int c = col - 1; c <= col + 1; c++) {
                         if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
-                            if (board[r][c] == SHIP) {
+                            if (board[r][c] == Cell.SHIP) {
                                 isFree = false;
                                 break;
                             }
@@ -96,7 +102,7 @@ class Board {
                 }
                 if(isFree) {
                     for (int i = 0; i < size; i++) {
-                        board[row + i][col] = SHIP;
+                        board[row + i][col] = Cell.SHIP;
                     }
                     placed = true;
                 }
@@ -104,19 +110,19 @@ class Board {
         }
     }
 
-    public int shot(int row, int col){
+    public Result shot(int row, int col){
         switch(board[row][col]){
             case WATER:
-                board[row][col] = MISS;
-                return RESULT_MISS;
+                board[row][col] = Cell.MISS;
+                return Result.MISS;
             case SHIP:
-                board[row][col] = HIT;
-                return RESULT_HIT;
+                board[row][col] = Cell.HIT;
+                return Result.HIT;
             case MISS:
             case HIT:
-                return RESULT_ALREADY_SHOT;
+                return Result.ALREADY_SHOT;
             default:
-                return MISS;
+                return Result.ALREADY_SHOT;
         }
     }
 
@@ -124,7 +130,7 @@ class Board {
         int shipCellCount = 0;
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
-                if(board[i][j] == SHIP){
+                if(board[i][j] == Cell.SHIP){
                     shipCellCount ++;
                 }
             }

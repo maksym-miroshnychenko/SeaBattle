@@ -32,7 +32,7 @@ public class Main{
                 row = coord[0];
                 col = coord[1];
 
-                int playersShot = board.shot(row, col);
+                Board.Result playersShot = board.shot(row, col);
                 shipcellsLeft = board.shipCellCount();
 
                 if (shipcellsLeft == 0){
@@ -41,13 +41,13 @@ public class Main{
                 }
 
                 switch (playersShot) {
-                    case Board.RESULT_HIT:
+                    case HIT:
                         System.out.println("You`ve hit, you get one more turn!");
                         break;
-                    case Board.RESULT_ALREADY_SHOT:
+                    case ALREADY_SHOT:
                         System.out.println("You`ve already hit this cell, turn is still yours!");
                         break;
-                    case Board.RESULT_MISS:
+                    case MISS:
                         System.out.println("You`ve miss, you lose your turn");
                         playersTurn = false;
                         break;
