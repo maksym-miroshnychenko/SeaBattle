@@ -4,10 +4,9 @@ public class Main{
     public static void main(String[] args){
         Board board = new Board();
         Scanner scanner = new Scanner(System.in);
-        String input = " ";
         int row = 0;
         int col = 0;
-        boolean debugMode = true;
+        boolean debugMode = false;
 
 
 
@@ -29,13 +28,10 @@ public class Main{
             boolean playersTurn = true;
 
             while (playersTurn){
-                do {
-                    System.out.println("Your turn, enter coordinate");
-                    input = scanner.nextLine();
-                } while (!isValidInput(input));
+                int[] coord = readCoordinate(scanner);
+                row = coord[0];
+                col = coord[1];
 
-                row = coordinateRow(input);
-                col = coordinateCol(input);
                 int playersShot = board.shot(row, col);
                 shipcellsLeft = board.shipCellCount();
 
@@ -69,12 +65,18 @@ public class Main{
         scanner.close();
     }
 
-    public static int coordinateRow(String input){
-        return Integer.parseInt(input.substring(1));
-    }
-    public static int coordinateCol(String input){
-        char col = input.toUpperCase().charAt(0);
-        return col - 'A';
+    public static int[] readCoordinate(Scanner scanner){
+        String input;
+        do{
+            System.out.println("Your turn, enter coordinate");
+            input = scanner.nextLine();
+        }while(!isValidInput(input));
+
+        int [] coord = new int[2];
+        coord[0] = Integer.parseInt(input.substring(1));
+        coord[1] = (input.toUpperCase().charAt(0)) - 'A';
+
+        return coord;
     }
     public static boolean isValidInput(String input){
         if(input.length() < 2){return false;}
