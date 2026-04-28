@@ -20,32 +20,14 @@ class Board {
     }
 
 
-    public void printBoard(){
+    public void printBoard(boolean debugMode){
         System.out.println("--------------------------");
         System.out.println("  A B C D E F G H I J ");
         for (int i = 0; i < SIZE; i++){
             System.out.print((i) + " ");
             for (int j = 0; j < SIZE; j++){
                 String symbol = switch (board[i][j]) {
-                    case SHIP -> ". ";
-                    case HIT -> "X ";
-                    case MISS -> "M ";
-                    default -> ". ";
-                };
-                System.out.print(symbol);
-            }
-            System.out.println("|");
-        }
-    }
-
-    public void printDebugBoard(){
-        System.out.println("--------------------------");
-        System.out.println("  A B C D E F G H I J ");
-        for (int i = 0; i < SIZE; i++){
-            System.out.print((i) + " ");
-            for (int j = 0; j < SIZE; j++){
-                String symbol = switch (board[i][j]) {
-                    case SHIP -> "O ";
+                    case SHIP -> debugMode ? "O " : ". ";
                     case HIT -> "X ";
                     case MISS -> "M ";
                     default -> ". ";
@@ -110,7 +92,7 @@ class Board {
         }
     }
 
-    public Result shot(Main.Coordinate coord){
+    public Result shot(Coordinate coord){
         switch(board[coord.row][coord.col]){
             case WATER:
                 board[coord.row][coord.col] = Cell.MISS;
@@ -136,6 +118,11 @@ class Board {
             }
         }
         return shipCellCount;
+    }
+
+    public boolean wasShot(Coordinate coord){
+        return board[coord.row][coord.col] == Cell.HIT || board[coord.row][coord.col] == Cell.MISS;
+
     }
 }
 

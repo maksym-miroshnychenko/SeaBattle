@@ -1,12 +1,12 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main{
-    static class Coordinate{
-        int row;
-        int col;
-    }
+    static final Random RANDOM = new Random();
+
     public static void main(String[] args){
-        Board board = new Board();
+        Board playersBoard = new Board();
+        Board enemiesBoard = new Board();
         Scanner scanner = new Scanner(System.in);
         boolean debugMode = false;
 
@@ -14,27 +14,33 @@ public class Main{
 
         for (int size = 1; size <= 4; size++) {
             for (int i = 1; i <= 5 - size; i++) {
-                board.placeShip(size);
+                enemiesBoard.placeShip(size);
             }
         }
-        int shipcellsLeft = board.shipCellCount();
+        int enemiesShipcellsLeft = enemiesBoard.shipCellCount();
 
-        if (debugMode){
-            board.printDebugBoard();
-        } else {
-            board.printBoard();
+        for (int size = 1; size <= 4; size++) {
+            for (int i = 1; i <= 5 - size; i++) {
+                playersBoard.placeShip(size);
+            }
         }
+        int playersShipcellsLeft = playersBoard.shipCellCount();
+
+        playersBoard.printBoard(true);
+        enemiesBoard.printBoard(debugMode);
 
 
-        while (shipcellsLeft != 0) {
+
+        while (enemiesShipcellsLeft != 0 && playersShipcellsLeft != 0){
             boolean playersTurn = true;
+            boolean enemiesTurn = false;
 
             while (playersTurn){
                 Coordinate coord = readCoordinate(scanner);
-                Board.Result playersShot = board.shot(coord);
-                shipcellsLeft = board.shipCellCount();
+                Board.Result playersShot = enemiesBoard.shot(coord);
+                enemiesShipcellsLeft = enemiesBoard.shipCellCount();
 
-                if (shipcellsLeft == 0){
+                if (enemiesShipcellsLeft == 0){
                     System.out.println("You won!");
                     break;
                 }
@@ -49,15 +55,41 @@ public class Main{
                     case MISS:
                         System.out.println("You`ve miss, you lose your turn");
                         playersTurn = false;
+                        enemiesTurn = true;
+                        break;
+                }
+                enemiesBoard.printBoard(debugMode);
+                System.out.println("Enemies Ship cells left: " + enemiesShipcellsLeft);
+            }
+
+            while(enemiesTurn){
+                Coordinate botscoord = randomCoordinate(playersBoard);
+                Board.Result botsshot = playersBoard.shot(botscoord);
+                playersShipcellsLeft = playersBoard.shipCellCount();
+
+                System.out.println("Bot shot at:" + botscoord.toString());
+
+                if(playersShipcellsLeft == 0){
+                    System.out.println("You`ve lost!");
+                    break;
+                }
+
+                switch(botsshot){
+                    case HIT:
+                        System.out.println("Bot has hit, he gets one more turn!");
+                        break;
+                    case MISS:
+                        System.out.println("Bot has miss, he loses his turn");
+                        enemiesTurn = false;
+                        playersTurn = true;
+                        break;
+                    case ALREADY_SHOT:
+                        System.out.println("Bot tried an already shot cell");
                         break;
                 }
 
-                if (debugMode){
-                    board.printDebugBoard();
-                } else {
-                    board.printBoard();
-                }
-                System.out.println("Ship cells left: " + shipcellsLeft);
+                playersBoard.printBoard(true);
+                System.out.println("Your Ship cells left: " + playersShipcellsLeft);
             }
         }
 
@@ -77,6 +109,17 @@ public class Main{
 
         return coord;
     }
+
+    public static Coordinate randomCoordinate(Board board){
+        Coordinate botscoord = new Coordinate();
+        do {
+            botscoord.row = RANDOM.nextInt(Board.SIZE);
+            botscoord.col = RANDOM.nextInt(Board.SIZE);
+        }while (board.wasShot(botscoord));
+
+        return botscoord;
+    }
+
     public static boolean isValidInput(String input){
         if(input.length() < 2){return false;}
         else if (input.toUpperCase().charAt(0) < 'A' || input.toUpperCase().charAt(0) > 'J') { return false;}
