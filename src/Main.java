@@ -1,11 +1,13 @@
 import java.util.Scanner;
 
 public class Main{
+    static class Coordinate{
+        int row;
+        int col;
+    }
     public static void main(String[] args){
         Board board = new Board();
         Scanner scanner = new Scanner(System.in);
-        int row = 0;
-        int col = 0;
         boolean debugMode = false;
 
 
@@ -28,16 +30,13 @@ public class Main{
             boolean playersTurn = true;
 
             while (playersTurn){
-                int[] coord = readCoordinate(scanner);
-                row = coord[0];
-                col = coord[1];
-
-                Board.Result playersShot = board.shot(row, col);
+                Coordinate coord = readCoordinate(scanner);
+                Board.Result playersShot = board.shot(coord);
                 shipcellsLeft = board.shipCellCount();
 
                 if (shipcellsLeft == 0){
                     System.out.println("You won!");
-                    playersTurn = false;
+                    break;
                 }
 
                 switch (playersShot) {
@@ -65,16 +64,16 @@ public class Main{
         scanner.close();
     }
 
-    public static int[] readCoordinate(Scanner scanner){
+    public static Coordinate readCoordinate(Scanner scanner){
         String input;
         do{
             System.out.println("Your turn, enter coordinate");
             input = scanner.nextLine();
         }while(!isValidInput(input));
 
-        int [] coord = new int[2];
-        coord[0] = Integer.parseInt(input.substring(1));
-        coord[1] = (input.toUpperCase().charAt(0)) - 'A';
+        Coordinate coord = new Coordinate();
+        coord.row = Integer.parseInt(input.substring(1));
+        coord.col = (input.toUpperCase().charAt(0)) - 'A';
 
         return coord;
     }

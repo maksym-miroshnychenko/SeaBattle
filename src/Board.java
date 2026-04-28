@@ -110,13 +110,13 @@ class Board {
         }
     }
 
-    public Result shot(int row, int col){
-        switch(board[row][col]){
+    public Result shot(Main.Coordinate coord){
+        switch(board[coord.row][coord.col]){
             case WATER:
-                board[row][col] = Cell.MISS;
+                board[coord.row][coord.col] = Cell.MISS;
                 return Result.MISS;
             case SHIP:
-                board[row][col] = Cell.HIT;
+                board[coord.row][coord.col] = Cell.HIT;
                 return Result.HIT;
             case MISS:
             case HIT:
