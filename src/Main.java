@@ -110,15 +110,7 @@ public class Main{
         return coord;
     }
 
-    public static Coordinate randomCoordinate(Board board){
-        Coordinate botscoord = new Coordinate();
-        do {
-            botscoord.row = RANDOM.nextInt(Board.SIZE);
-            botscoord.col = RANDOM.nextInt(Board.SIZE);
-        }while (board.wasShot(botscoord));
 
-        return botscoord;
-    }
 
     public static boolean isValidInput(String input){
         if(input.length() < 2){return false;}

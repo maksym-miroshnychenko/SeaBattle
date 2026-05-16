@@ -50,7 +50,7 @@ class Board {
             if (horizontal && col + size - 1 < SIZE) {
                 for (int r = row - 1; r <=  row + 1; r++) {
                     for (int c = col - 1; c <= col + size; c++) {
-                        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
+                        if (inBounds(r,c)) {
                             if(board[r][c] == Cell.SHIP) {
                                 isFree = false;
                                 break;
@@ -71,7 +71,7 @@ class Board {
             } else if (!horizontal && row + size - 1 < SIZE) {
                 for (int r = row - 1; r <=  row + size; r++) {
                     for (int c = col - 1; c <= col + 1; c++) {
-                        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
+                        if (inBounds(r,c)) {
                             if (board[r][c] == Cell.SHIP) {
                                 isFree = false;
                                 break;
@@ -122,7 +122,10 @@ class Board {
 
     public boolean wasShot(Coordinate coord){
         return board[coord.row][coord.col] == Cell.HIT || board[coord.row][coord.col] == Cell.MISS;
+    }
 
+    public boolean inBounds(int row, int col){
+        return row >= 0 && row < SIZE && col >= 0 && col < SIZE;
     }
 }
 
